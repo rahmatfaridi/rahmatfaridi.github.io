@@ -29,6 +29,11 @@
       margin: 0;
     }
   </style>
+  <style>
+    #canvas {
+      border: 1px solid black;
+    }
+  </style>
 </head>
 
 <body>
@@ -70,6 +75,63 @@
       <li>Skill 20240728-2</li>
     </ul>
   </div>
+
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <script>
+    // Get the canvas element
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set the initial position
+    let x = canvas.width / 2;
+    let y = canvas.height / 2;
+
+    // Set the step size
+    const stepSize = 5;
+
+    // Array to store the path
+    const path = [];
+
+    // Draw the initial position
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.fill();
+    path.push({ x, y });
+
+    // Run the random walk
+    function randomWalk() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Move in a random direction
+      const angle = Math.random() * 2 * Math.PI;
+      x += stepSize * Math.cos(angle);
+      y += stepSize * Math.sin(angle);
+
+      // Keep the walker within the canvas
+      x = Math.max(0, Math.min(canvas.width, x));
+      y = Math.max(0, Math.min(canvas.height, y));
+
+      // Draw the new position
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      path.push({ x, y });
+
+      // Draw the path
+      ctx.beginPath();
+      for (let i = 0; i < path.length; i++) {
+        ctx.lineTo(path[i].x, path[i].y);
+      }
+      ctx.stroke();
+
+      // Request the next frame
+      requestAnimationFrame(randomWalk);
+    }
+
+    // Start the random walk
+    randomWalk();
+  </script>
 </body>
 
 </html>
