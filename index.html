@@ -1,137 +1,822 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My CV2023</title>
-  <style>
-    /* Add CSS  styling to your CV */
-    h1 {
-      font-size: 36px;
-    }
-    
-    img {
-      max-width: 200px;
-      border-radius: 50%;
-    }
-    
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-    
-    li {
-      margin-bottom: 10px;
-    }
-    
-    p {
-      margin: 0;
-    }
-  </style>
-  <style>
-    #canvas {
-      border: 1px solid black;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahmat Faridi — Mathematical Modeling & Statistics</title>
+    <meta name="description" content="Personal homepage of Rahmat Faridi — interested in mathematical modeling and statistics applied to all kinds of problems.">
+    <style>
+        :root {
+            --bg: #0a0d14;
+            --card-bg: rgba(18, 22, 30, 0.82);
+            --card-border: rgba(48, 54, 61, 0.55);
+            --text: #e6edf3;
+            --text-secondary: #a1aab3;
+            --accent: #5ea3f0;
+            --accent-glow: #7db8f7;
+            --green: #4dac7c;
+            --tag-bg: rgba(94, 163, 240, 0.1);
+            --tag-border: rgba(94, 163, 240, 0.25);
+            --private-badge: #b0883b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Three.js Canvas Background ──────── */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Main Content Wrapper ────────────── */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            pointer-events: auto;
+        }
+
+        /* ── Hero Section ────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 70px 24px 50px;
+            position: relative;
+        }
+
+        .avatar-link {
+            display: inline-block;
+            margin-bottom: 16px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(94, 163, 240, 0.5);
+            box-shadow: 0 0 32px rgba(94, 163, 240, 0.2);
+            transition: box-shadow 0.4s, border-color 0.4s;
+            width: 100px;
+            height: 100px;
+        }
+
+        .avatar-link:hover {
+            box-shadow: 0 0 48px rgba(94, 163, 240, 0.45);
+            border-color: rgba(94, 163, 240, 0.8);
+        }
+
+        .avatar-link img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .hero .username {
+            font-size: 1.05rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .hero .bio {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 620px;
+            margin: 0 auto 22px;
+            line-height: 1.6;
+        }
+
+        .hero .interest-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .interest-tag {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 22px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            color: var(--accent-glow);
+            letter-spacing: 0.2px;
+        }
+
+        /* ── Container ───────────────────────── */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px 50px;
+        }
+
+        /* ── Section Headings ────────────────── */
+        .section-heading {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .section-heading .icon {
+            font-size: 1.5rem;
+        }
+
+        /* ── Repo Cards ──────────────────────── */
+        .repo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .repo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .repo-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px 22px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .repo-card:hover {
+            border-color: rgba(94, 163, 240, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .repo-card .repo-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            word-break: break-word;
+        }
+
+        .repo-card .repo-name a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .repo-card .repo-name a:hover {
+            color: var(--accent);
+        }
+
+        .repo-card .repo-name .octicon {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .repo-card .repo-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .repo-card .repo-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .badge-fork {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: rgba(125, 140, 160, 0.1);
+            border: 1px solid rgba(125, 140, 160, 0.3);
+            color: #9aa8b8;
+        }
+
+        .badge-private {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: rgba(176, 136, 59, 0.12);
+            border: 1px solid rgba(176, 136, 59, 0.35);
+            color: var(--private-badge);
+        }
+
+        .badge-owned {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: rgba(77, 172, 124, 0.1);
+            border: 1px solid rgba(77, 172, 124, 0.3);
+            color: var(--green);
+        }
+
+        /* ── Contact / Footer ────────────────── */
+        .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 28px 24px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .contact-card p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            background: rgba(94, 163, 240, 0.08);
+            border: 1px solid rgba(94, 163, 240, 0.3);
+            color: var(--accent-glow);
+            transition: all 0.25s;
+        }
+
+        .contact-link:hover {
+            background: rgba(94, 163, 240, 0.18);
+            border-color: rgba(94, 163, 240, 0.6);
+            box-shadow: 0 0 20px rgba(94, 163, 240, 0.2);
+        }
+
+        /* ── Footer ──────────────────────────── */
+        .site-footer {
+            text-align: center;
+            padding: 20px 24px 32px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .site-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Responsive ──────────────────────── */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero {
+                padding: 40px 16px 30px;
+            }
+            .hero .bio {
+                font-size: 0.95rem;
+            }
+            .repo-card {
+                padding: 16px 18px;
+            }
+            .avatar-link {
+                width: 80px;
+                height: 80px;
+            }
+            .contact-card {
+                padding: 20px 16px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div>
-    <img src="your-picture-url" alt="Your Name">
-    <h1>RahmatFaridi</h1>
-    <p>Email: your-email@example.com</p>
-    <p>Location: Iran </p>
-    <hr>
-    <h2>Summary</h2>
-    <p>Add a brief summary of your experience and skills here.</p>
-    <hr>
-    <h2>Education</h2>
-    <ul>
-      <li>
-        <h3>Degree Name</h3>
-        <p>School Name - Graduation Date</p>
-      </li>
-    </ul>
-    <hr>
-    <h2>Experience</h2>
-    <ul>
-      <li>
-        <h3>Job Title</h3>
-        <p>Company Name - Employment Dates</p>
-        <ul>
-          <li>Bullet point describing job responsibility or achievement</li>
-        </ul>
-      </li>
-    </ul>
-    <hr>
-    <h2>Skills</h2>
-    <ul>
-      <li>Skill 1</li>
-      <li>Skill 2</li>
-      <li>Skill 3</li>
-      <li>Skill 4-5</li>
-      <li>Skill 20240728</li>
-      <li>Skill 20240728-2</li>
-    </ul>
-  </div>
 
-  <canvas id="canvas" width="500" height="500"></canvas>
-  <script>
-    // Get the canvas element
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    <!-- ═══════════════ THREE.JS CANVAS ═══════════════ -->
+    <canvas id="bg-canvas"></canvas>
 
-    // Set the initial position
-    let x = canvas.width / 2;
-    let y = canvas.height / 2;
+    <!-- ═══════════════ CONTENT ═══════════════ -->
+    <div class="content-wrapper">
 
-    // Set the step size
-    const stepSize = 5;
+        <!-- ── Hero ────────────────────────── -->
+        <header class="hero">
+            <a href="https://github.com/rahmatfaridi" target="_blank" rel="noopener" class="avatar-link"
+            title="View GitHub profile">
+            <img src="https://github.com/rahmatfaridi.png" alt="Rahmat Faridi avatar" loading="lazy"
+            onerror="this.style.display='none';this.parentElement.innerHTML='<span style=font-size:60px;display:flex;align-items:center;justify-content:center;width:100%;height:100%;>👋</span>';">
+        </a>
+        <h1>Rahmat Faridi</h1>
+        <span class="username">@rahmatfaridi</span>
+        <p class="bio">
+            👋 Hi! I'm interested in <strong>mathematical modeling</strong> and
+            <strong>statistics</strong> applied to all kinds of problems.
+            Passionate about computational approaches and the beauty of mathematical structures.
+        </p>
+        <div class="interest-tags">
+            <span class="interest-tag">📊 Mathematical Modeling</span>
+            <span class="interest-tag">📈 Statistics</span>
+            <span class="interest-tag">🔬 Computational Math</span>
+            <span class="interest-tag">🌐 Algebraic Geometry</span>
+            <span class="interest-tag">⚛️ Quantum Computing</span>
+        </div>
+    </header>
 
-    // Array to store the path
-    const path = [];
+    <!-- ── Repositories ──────────────────── -->
+    <main class="container">
+        <h2 class="section-heading">
+            <span class="icon">📦</span> Repositories
+        </h2>
+        <div class="repo-grid">
 
-    // Draw the initial position
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, 2 * Math.PI);
-    ctx.fill();
-    path.push({ x, y });
+            <!-- Visualization of Grover's Search (owned) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">📁</span>
+                    <a href="https://github.com/rahmatfaridi/Visualization-of-Grover-s-Search" target="_blank" rel="noopener">
+                        Visualization-of-Grover-s-Search
+                    </a>
+                </div>
+                <p class="repo-desc">
+                    Visualization of Grover's Algorithm. Assuming special oracle and exploring quantum search visually.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-owned">Owned</span>
+                    <span>Public</span>
+                </div>
+            </div>
 
-    // Run the random walk
-    function randomWalk() {
-      // Clear the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+            <!-- MICS Internship (private) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🔒</span>
+                    <span>MICS_Internship</span>
+                </div>
+                <p class="repo-desc">
+                    Repository for my internship at the laboratory MICS — CentraleSupélec (Paris, France).
+                    Research focused on high-frequency trading and the investigation of Hawkes processes.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-private">Private</span>
+                    <span>Internship Research</span>
+                </div>
+            </div>
 
-      // Move in a random direction
-      const angle = Math.random() * 2 * Math.PI;
-      x += stepSize * Math.cos(angle);
-      y += stepSize * Math.sin(angle);
+            <!-- sandpileresult (private) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🔒</span>
+                    <span>sandpileresult</span>
+                </div>
+                <p class="repo-desc">
+                    Results and analysis related to the Abelian sandpile model.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-private">Private</span>
+                    <span>Updated Feb 23, 2022</span>
+                </div>
+            </div>
 
-      // Keep the walker within the canvas
-      x = Math.max(0, Math.min(canvas.width, x));
-      y = Math.max(0, Math.min(canvas.height, y));
+            <!-- Belyi-Maps (fork) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🍴</span>
+                    <a href="https://github.com/rahmatfaridi/Belyi-Maps" target="_blank" rel="noopener">
+                        Belyi-Maps
+                    </a>
+                </div>
+                <p class="repo-desc">
+                    Forked from <strong>arsenelkin/Belyi-Maps</strong>. Computational exploration of Belyi maps and related structures.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-fork">Forked</span>
+                    <span>Public</span>
+                </div>
+            </div>
 
-      // Draw the new position
-      ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx.fill();
-      path.push({ x, y });
+            <!-- circle_pack (fork) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🍴</span>
+                    <a href="https://github.com/rahmatfaridi/circle_pack" target="_blank" rel="noopener">
+                        circle_pack
+                    </a>
+                </div>
+                <p class="repo-desc">
+                    Forked from <strong>dannycalegari/circle_pack</strong>. Circle packing algorithms and visualizations.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-fork">Forked</span>
+                    <span>Public</span>
+                </div>
+            </div>
 
-      // Draw the path
-      ctx.beginPath();
-      for (let i = 0; i < path.length; i++) {
-        ctx.lineTo(path[i].x, path[i].y);
-      }
-      ctx.stroke();
+            <!-- algebraic_geometry (fork) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🍴</span>
+                    <a href="https://github.com/rahmatfaridi/algebraic_geometry" target="_blank" rel="noopener">
+                        algebraic_geometry
+                    </a>
+                </div>
+                <p class="repo-desc">
+                    Forked from <strong>Maayan-Moshe/algebraic_geometry</strong>.
+                    Computational algebraic geometry computations. For learning purposes.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-fork">Forked</span>
+                    <span>Public</span>
+                </div>
+            </div>
 
-      // Request the next frame
-      requestAnimationFrame(randomWalk);
+            <!-- Quantum-walks-project (fork) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🍴</span>
+                    <a href="https://github.com/rahmatfaridi/Quantum-walks-project" target="_blank" rel="noopener">
+                        Quantum-walks-project
+                    </a>
+                </div>
+                <p class="repo-desc">
+                    Forked from <strong>joshuaHaasz/Quantum-walks-project</strong>.
+                    Durham University fourth year mathematics project on quantum walks.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-fork">Forked</span>
+                    <span>Public</span>
+                </div>
+            </div>
+
+            <!-- asm (fork) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🍴</span>
+                    <a href="https://github.com/rahmatfaridi/asm" target="_blank" rel="noopener">
+                        asm
+                    </a>
+                </div>
+                <p class="repo-desc">
+                    Forked from <strong>bfichera/asm</strong>. Abelian sandpile model — simulations and computations.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-fork">Forked</span>
+                    <span>Public</span>
+                </div>
+            </div>
+
+            <!-- taxinomitis (fork) -->
+            <div class="repo-card">
+                <div class="repo-name">
+                    <span class="octicon">🍴</span>
+                    <a href="https://github.com/rahmatfaridi/taxinomitis" target="_blank" rel="noopener">
+                        taxinomitis
+                    </a>
+                </div>
+                <p class="repo-desc">
+                    Forked from <strong>IBM/taxinomitis</strong>.
+                    Source code for the Machine Learning for Kids educational site.
+                </p>
+                <div class="repo-meta">
+                    <span class="badge-fork">Forked</span>
+                    <span>Public</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Contact ────────────────────── -->
+        <div class="contact-card" style="margin-top: 28px;">
+            <h2 class="section-heading" style="justify-content: center; margin-bottom: 10px;">
+                <span class="icon">📫</span> How to Reach Me
+            </h2>
+            <p>
+                Feel free to connect, collaborate, or just say hello!
+                I'm always open to discussing mathematics, statistics, and interesting computational problems.
+            </p>
+            <div class="contact-links">
+                <a href="https://github.com/rahmatfaridi" target="_blank" rel="noopener" class="contact-link">
+                    💻 GitHub Profile
+                </a>
+                <a href="https://github.com/rahmatfaridi?tab=repositories" target="_blank" rel="noopener" class="contact-link">
+                    📂 All Repositories
+                </a>
+                <a href="mailto:rahmatfaridi@example.com" class="contact-link"
+                onclick="this.href=this.href.replace('rahmatfaridi@example.com',prompt('My email is not listed publicly. If you know my email, enter it here:','')||'rahmatfaridi@example.com');">
+                ✉️ Send Email
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- ── Footer ──────────────────────── -->
+<footer class="site-footer">
+    <p>
+        © <span id="current-year"></span>
+        <a href="https://github.com/rahmatfaridi" target="_blank" rel="noopener">Rahmat Faridi</a>
+        &nbsp;·&nbsp; Built with curiosity &amp; code
+        &nbsp;·&nbsp;
+        <a href="https://github.com/rahmatfaridi/rahmatfaridi.github.io" target="_blank" rel="noopener">Source ↗</a>
+    </p>
+</footer>
+</div>
+
+<!-- ═══════════════ THREE.JS CDN ═══════════════ -->
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+        }
+    }
+</script>
+
+<!-- ═══════════════ 3D ANIMATION SCRIPT ═══════════════ -->
+<script type="module">
+    import * as THREE from 'three';
+
+    // ── DOM ──────────────────────────────────
+    const canvas = document.getElementById('bg-canvas');
+    const contentWrapper = document.querySelector('.content-wrapper');
+
+    // ── Renderer ─────────────────────────────
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x0a0d14, 1);
+    renderer.domElement.style.pointerEvents = 'none';
+
+    // ── Scene & Camera ──────────────────────
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.5, 40);
+    camera.position.set(5.5, 3.2, 7.5);
+    camera.lookAt(0, 0, 0);
+
+    // ── Lighting (subtle, for depth) ────────
+    const ambientLight = new THREE.AmbientLight(0x223344, 2.5);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0x4488cc, 8, 20, 1.5);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    // ── Main Group ──────────────────────────
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    // ── Torus Wireframe ─────────────────────
+    const torusRadius = 2.8;
+    const tubeRadius = 0.9;
+    const torusGeo = new THREE.TorusGeometry(torusRadius, tubeRadius, 36, 72);
+    const torusWire = new THREE.Mesh(torusGeo, new THREE.MeshBasicMaterial({
+        color: 0x2a4058,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.25,
+        depthWrite: false,
+    }));
+    mainGroup.add(torusWire);
+
+    // Inner subtle ring (decorative)
+    const innerRingGeo = new THREE.TorusGeometry(torusRadius, 0.03, 16, 120);
+    const innerRing = new THREE.Mesh(innerRingGeo, new THREE.MeshBasicMaterial({
+        color: 0x3a6080,
+        transparent: true,
+        opacity: 0.4,
+        depthWrite: false,
+    }));
+    mainGroup.add(innerRing);
+
+    // ── Random Walk Particle ────────────────
+    const particleGeo = new THREE.SphereGeometry(0.09, 20, 20);
+    const particleMat = new THREE.MeshStandardMaterial({
+        color: 0x7db8f7,
+        emissive: 0x4488cc,
+        emissiveIntensity: 2.5,
+        roughness: 0.2,
+        metalness: 0.1,
+    });
+    const particle = new THREE.Mesh(particleGeo, particleMat);
+    mainGroup.add(particle);
+
+    // Glow halo around particle
+    const glowGeo = new THREE.SphereGeometry(0.18, 20, 20);
+    const glowMat = new THREE.MeshBasicMaterial({
+        color: 0x88ccff,
+        transparent: true,
+        opacity: 0.35,
+        depthWrite: false,
+    });
+    const glowHalo = new THREE.Mesh(glowGeo, glowMat);
+    particle.add(glowHalo);
+
+    // ── Trail Line ──────────────────────────
+    const MAX_TRAIL = 350;
+    const trailPositionsArr = new Float32Array(MAX_TRAIL * 3);
+    let trailCount = 0;
+    const trailGeo = new THREE.BufferGeometry();
+    trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPositionsArr, 3));
+    trailGeo.setDrawRange(0, 0);
+    const trailMat = new THREE.LineBasicMaterial({
+        color: 0x5599cc,
+        transparent: true,
+        opacity: 0.55,
+        depthWrite: false,
+        linewidth: 1,
+    });
+    const trailLine = new THREE.Line(trailGeo, trailMat);
+    mainGroup.add(trailLine);
+
+    // ── Scattered Dots on Torus ─────────────
+    const dotsGroup = new THREE.Group();
+    mainGroup.add(dotsGroup);
+    const dotGeo = new THREE.SphereGeometry(0.025, 6, 6);
+    const dotMat = new THREE.MeshBasicMaterial({ color: 0x446688, transparent: true, opacity: 0.5,
+    depthWrite: false });
+    const numDots = 80;
+    for (let i = 0; i < numDots; i++) {
+        const thetaDot = Math.random() * Math.PI * 2;
+        const phiDot = Math.random() * Math.PI * 2;
+        const x = (torusRadius + tubeRadius * Math.cos(thetaDot)) * Math.cos(phiDot);
+        const y = (torusRadius + tubeRadius * Math.cos(thetaDot)) * Math.sin(phiDot);
+        const z = tubeRadius * Math.sin(thetaDot);
+        const dot = new THREE.Mesh(dotGeo, dotMat);
+        dot.position.set(x, y, z);
+        dotsGroup.add(dot);
     }
 
-    // Start the random walk
-    randomWalk();
-  </script>
-</body>
+    // ── Random Walk State ───────────────────
+    let theta = Math.random() * Math.PI * 2;
+    let phi = Math.random() * Math.PI * 2;
+    const stepBase = 0.018;
 
+    // ── Helper: torus surface position ──────
+    function torusPosition(th, ph) {
+        const x = (torusRadius + tubeRadius * Math.cos(th)) * Math.cos(ph);
+        const y = (torusRadius + tubeRadius * Math.cos(th)) * Math.sin(ph);
+        const z = tubeRadius * Math.sin(th);
+        return new THREE.Vector3(x, y, z);
+    }
+
+    // Initialize trail
+    const initPos = torusPosition(theta, phi);
+    for (let i = 0; i < 20; i++) {
+        const idx = i * 3;
+        trailPositionsArr[idx] = initPos.x;
+        trailPositionsArr[idx + 1] = initPos.y;
+        trailPositionsArr[idx + 2] = initPos.z;
+    }
+    trailCount = 20;
+    trailGeo.setDrawRange(0, trailCount);
+    trailGeo.attributes.position.needsUpdate = true;
+    particle.position.copy(initPos);
+
+    // ── Animation Loop ──────────────────────
+    const clock = new THREE.Clock();
+    let lastTrailAdd = 0;
+    const trailAddInterval = 0.025; // seconds between trail points
+
+    function animate(timestamp) {
+        requestAnimationFrame(animate);
+
+        const dt = Math.min(clock.getDelta(), 0.1);
+        const elapsed = timestamp * 0.001;
+
+        // ── Random walk step ──────────────────
+        const stepScale = stepBase * (1 + 0.3 * Math.sin(elapsed * 1.7));
+        const dTheta = (Math.random() - 0.5) * stepScale * 2.2;
+        const dPhi = (Math.random() - 0.5) * stepScale * 2.2;
+        theta += dTheta;
+        phi += dPhi;
+        // Wrap angles
+        theta = ((theta % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+        phi = ((phi % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+
+        const newPos = torusPosition(theta, phi);
+        particle.position.copy(newPos);
+
+        // ── Add to trail periodically ─────────
+        lastTrailAdd += dt;
+        while (lastTrailAdd >= trailAddInterval) {
+            lastTrailAdd -= trailAddInterval;
+            if (trailCount < MAX_TRAIL) {
+                const idx = trailCount * 3;
+                trailPositionsArr[idx] = newPos.x;
+                trailPositionsArr[idx + 1] = newPos.y;
+                trailPositionsArr[idx + 2] = newPos.z;
+                trailCount++;
+            } else {
+                // Shift left
+                for (let i = 0; i < (MAX_TRAIL - 1) * 3; i++) {
+                    trailPositionsArr[i] = trailPositionsArr[i + 3];
+                }
+                const lastIdx = (MAX_TRAIL - 1) * 3;
+                trailPositionsArr[lastIdx] = newPos.x;
+                trailPositionsArr[lastIdx + 1] = newPos.y;
+                trailPositionsArr[lastIdx + 2] = newPos.z;
+            }
+            trailGeo.attributes.position.needsUpdate = true;
+            trailGeo.setDrawRange(0, trailCount);
+        }
+
+        // ── Rotate main group gently ──────────
+        mainGroup.rotation.y += dt * 0.12;
+        mainGroup.rotation.x += dt * 0.04;
+        mainGroup.rotation.z += dt * 0.025;
+
+        // ── Subtle camera sway ────────────────
+        const camAngle = elapsed * 0.18;
+        const camDist = 7.8 + Math.sin(elapsed * 0.35) * 0.6;
+        const camY = 2.8 + Math.cos(elapsed * 0.4) * 1.0;
+        camera.position.x = Math.cos(camAngle) * camDist;
+        camera.position.z = Math.sin(camAngle) * camDist;
+        camera.position.y = camY;
+        camera.lookAt(0, 0, 0);
+
+        // ── Particle glow pulsation ───────────
+        const pulse = 1 + 0.2 * Math.sin(elapsed * 3.5);
+        glowHalo.scale.setScalar(pulse);
+        glowHalo.material.opacity = 0.28 + 0.1 * Math.sin(elapsed * 3.5);
+
+        // ── Trail opacity subtle variation ────
+        trailMat.opacity = 0.45 + 0.08 * Math.sin(elapsed * 1.3);
+
+        // ── Render ────────────────────────────
+        renderer.render(scene, camera);
+    }
+
+    // ── Handle Resize ───────────────────────
+    window.addEventListener('resize', () => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    });
+
+    // ── Start ───────────────────────────────
+    requestAnimationFrame(animate);
+
+    // ── Set current year ────────────────────
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    console.log('🌐 Torus random walk animation started.');
+    console.log('👋 Welcome to Rahmat Faridi\'s GitHub page!');
+    console.log('   Mathematical modeling & statistics — visualized in 3D.');
+</script>
+</body>
 </html>
